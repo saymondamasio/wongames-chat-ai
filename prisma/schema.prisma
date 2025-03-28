@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String       @id @default(uuid())
+  email       String       @unique
+  password    String?
+  chats       Chat[]
+  documents   Document[]
+  suggestions Suggestion[]
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+}
+
+model Chat {
+  id         String     @id @default(uuid())
+  createdAt  DateTime   @default(now())
+  title      String
+  userId     String
+  user       User       @relation(fields: [userId], references: [id])
+  visibility Visibility @default(PRIVATE)
+  messages   Message[]
+  votes      Vote[]
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  chatId      String
+  chat        Chat     @relation(fields: [chatId], references: [id])
+  role        String
+  parts       Json
+  attachments Json
+  createdAt   DateTime @default(now())
+  votes       Vote[]
+}
+
+model Vote {
+  chatId    String
+  messageId String
+  isUpvoted Boolean
+  chat      Chat    @relation(fields: [chatId], references: [id])
+  message   Message @relation(fields: [messageId], references: [id])
+
+  @@id([chatId, messageId])
+}
+
+model Document {
+  id          String       @default(uuid())
+  createdAt   DateTime     @default(now())
+  title       String
+  content     String?
+  kind        Kind         @default(TEXT)
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  suggestions Suggestion[]
+
+  @@id([id, createdAt])
+}
+
+enum Kind {
+  TEXT
+  CODE
+  IMAGE
+  SHEET
+}
+
+model Suggestion {
+  id                String   @id @default(uuid())
+  documentId        String
+  documentCreatedAt DateTime
+  originalText      String
+  suggestedText     String
+  description       String?
+  isResolved        Boolean  @default(false)
+  userId            String
+  user              User     @relation(fields: [userId], references: [id])
+  createdAt         DateTime @default(now())
+  document          Document @relation(fields: [documentId, documentCreatedAt], references: [id, createdAt])
+}
