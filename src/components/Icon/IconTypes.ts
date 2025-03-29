@@ -1,0 +1,3 @@
+
+      export type AvailableIcons = 'arrow-up'|'attachment'|'bot'|'box'|'check-circle-fill'|'checked-square'|'chevron-down'|'clock-rewind'|'code'|'copy'|'cross'|'cross-small'|'delta'|'download'|'eye'|'file'|'file copy'|'fullscreen'|'git'|'globe'|'globe copy'|'gps'|'home'|'image'|'info'|'invoice'|'line-chart'|'loader'|'lock'|'logo-anthropic'|'logo-google'|'logo-openai'|'logs'|'menu'|'message'|'more'|'more-horizontal'|'next'|'paperclip'|'pen'|'pencil-edit'|'play'|'plus'|'python'|'redo'|'route'|'share'|'sidebar-left'|'sparkles'|'stop'|'summarize'|'terminal'|'terminal-window'|'thumb-down'|'thumb-up'|'trash'|'unchecked-square'|'undo'|'upload'|'user'|'vercel'|'vercel copy'|'warning'|'window'
+  
