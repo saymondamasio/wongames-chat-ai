@@ -20,12 +20,14 @@ export const {
     Credentials({
       credentials: {},
       async authorize({ email, password }: any) {
-        const users = await prisma.user.findMany({ where: { email } });
-        if (users.length === 0) return null;
-        // biome-ignore lint: Forbidden non-null assertion.
-        const passwordsMatch = await compare(password, users[0].password!);
+        const user = await prisma.user.findFirst({ where: { email } });
+        if (!user) return null;
+
+        console.log(user);
+
+        const passwordsMatch = await compare(password, user.password!);
         if (!passwordsMatch) return null;
-        return users[0] as any;
+        return user as any;
       },
     }),
   ],
